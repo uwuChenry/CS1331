@@ -10,6 +10,7 @@ public class ShoppingMall{
         double change = cash - subTotal * taxRate;
         int temp = (int)(change * 100);
         double changeTrunc = (double)temp / 100;
-        System.out.printf("%s has $ %.2f dollars remaining!\n%s started with %d dollars!", name, changeTrunc, name, cash);
-    }
+        System.out.println(name + " has $" + changeTrunc + " dollars remaining!\n" + name + " started with $" + cash + " dollars!");
+        // System.out.printf("%s has $%.2f dollars remaining!\n%s started with $%d dollars!", name, changeTrunc, name, cash);
+    }                                                           
 }
