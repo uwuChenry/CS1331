@@ -1,3 +1,4 @@
+package PE1;
 public class ShoppingMall{
     //Po Cheng Chen
     // fun fact: i like to do photography

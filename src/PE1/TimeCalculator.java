@@ -1,3 +1,4 @@
+package PE1;
 public class TimeCalculator {
     public static void main(String[] args) {
         double homeworkTime = 3.99;
