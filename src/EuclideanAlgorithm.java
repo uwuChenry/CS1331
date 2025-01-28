@@ -1,4 +1,3 @@
-package PE2;
 
 public class EuclideanAlgorithm {
     public static void main(String[] args) {
@@ -29,7 +28,7 @@ public class EuclideanAlgorithm {
             dividend = divisor;
             divisor = remainder;
         } while(remainder != 0);
-        System.out.println("The GCD is" + gcd + ".");
+        System.out.println("The GCD is " + gcd + ".");
         switch (steps) {
             case 1:
                 System.out.println("Only one step was needed!");
