@@ -8,5 +8,6 @@ public class test {
         String dataTwo = myScanner.nextLine();
         System.out.println(dataOne);
         System.out.println(dataTwo);
+        myScanner.close();
     }
 }
