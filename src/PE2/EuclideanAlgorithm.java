@@ -1,3 +1,4 @@
+package PE2;
 
 public class EuclideanAlgorithm {
     public static void main(String[] args) {
