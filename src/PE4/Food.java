@@ -1,3 +1,4 @@
+package PE4;
 public enum Food {
     RAT_ON_A_STICK,
     WILLAGE_BURNT_RICE,
