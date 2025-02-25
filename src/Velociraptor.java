@@ -5,24 +5,17 @@
  * @version 1.0
  */
 public class Velociraptor extends Dinosaur {
-    /**
-     * The speed of the velociraptor in miles per hour.
-     */
     private int speed;
-
-    /**
-     * The pack to which the velociraptor belongs.
-     */
     private Pack pack;
 
     /**
      * Constructs a new Velociraptor with the specified name, height, width, weight, speed, and pack.
      *
      * @param name   the name of the velociraptor
-     * @param height the height of the velociraptor in feet
-     * @param width  the width of the velociraptor in feet
-     * @param weight the weight of the velociraptor in pounds
-     * @param speed  the speed of the velociraptor in miles per hour
+     * @param height the height of the velociraptor
+     * @param width  the width of the velociraptor
+     * @param weight the weight of the velociraptor
+     * @param speed  the speed of the velociraptor
      * @param pack   the pack to which the velociraptor belongs
      */
     public Velociraptor(String name, double height, double width, double weight, int speed, Pack pack) {

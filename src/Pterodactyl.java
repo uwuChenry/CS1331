@@ -5,19 +5,16 @@
  * @version 1.0
  */
 public class Pterodactyl extends Dinosaur {
-    /**
-     * The flight ceiling of the pterodactyl in feet.
-     */
     private double flightCeiling;
 
     /**
      * Constructs a new Pterodactyl with the specified name, height, width, weight, and flight ceiling.
      *
      * @param name          the name of the pterodactyl
-     * @param height        the height of the pterodactyl in feet
-     * @param width         the width of the pterodactyl in feet
-     * @param weight        the weight of the pterodactyl in pounds
-     * @param flightCeiling the flight ceiling of the pterodactyl in feet
+     * @param height        the height of the pterodactyl
+     * @param width         the width of the pterodactyl
+     * @param weight        the weight of the pterodactyl
+     * @param flightCeiling the flight ceiling of the pterodactyl
      */
     public Pterodactyl(String name, double height, double width, double weight, double flightCeiling) {
         super(name, height, width, weight);
@@ -30,10 +27,10 @@ public class Pterodactyl extends Dinosaur {
 
     /**
      * Constructs a new Pterodactyl with the specified name and width.
-     * The height is set to 15.0 feet, the weight is set to 1000.0 pounds, and the flight ceiling is set to 50.0 feet.
+     * Default values are height = 15.0, weight = 1000.0, flightCeiling = 50.0
      *
      * @param name  the name of the pterodactyl
-     * @param width the width of the pterodactyl in feet
+     * @param width the width of the pterodactyl
      */
     public Pterodactyl(String name, double width) {
         this(name, 15.0, width, 1000.0, 50.0);
@@ -41,7 +38,7 @@ public class Pterodactyl extends Dinosaur {
 
     /**
      * Constructs a new Pterodactyl with the specified name.
-     * default height = 15.0, width = 20.0, weight = 1000.0, flightCeiling = 50.0
+     * Default values are height = 15.0, width = 20.0, weight = 1000.0, flightCeiling = 50.0
      *
      * @param name the name of the pterodactyl
      */

@@ -31,6 +31,7 @@ public class Dinosaur {
 
     /**
      * Constructs a new Dinosaur with default values.
+     * Default values are name = "Barney", height = 15.0, width = 20.0, weight = 1000.0
      */
     public Dinosaur() {
         this("Barney", 15.0, 20.0, 1000.0);
