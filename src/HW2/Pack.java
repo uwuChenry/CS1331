@@ -1,3 +1,4 @@
+package HW2;
 /**
  * The Pack class represents a pack of dinosaurs.
  * @author Po Cheng, Chen

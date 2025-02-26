@@ -1,3 +1,4 @@
+package HW2;
 /**
  * The Velociraptor class represents a velociraptor dinosaur with a specified speed and pack.
  * It extends the Dinosaur class and adds the speed and pack attributes.

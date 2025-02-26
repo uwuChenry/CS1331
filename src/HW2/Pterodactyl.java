@@ -1,3 +1,4 @@
+package HW2;
 /**
  * The Pterodactyl class represents a pterodactyl dinosaur with a specified flight ceiling.
  * It extends the Dinosaur class and adds the flight ceiling attribute.
