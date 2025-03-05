@@ -1,6 +1,8 @@
+
 /**
- * The Bus class represents a bus that extends the Vehicle class.
- * It includes additional properties such as location and stopsPerMile.
+ * The Bus class extends the Vehicle class.
+ * @author Po Cheng Chen
+ * @version 1.0
  */
 public class Bus extends Vehicle {
     private String location;
@@ -60,28 +62,24 @@ public class Bus extends Vehicle {
      *
      * @param distance the distance to drive
      * @param passengers the new passengers to add
-     * @return true if the passengers were added, false otherwise
+     * @return true bus can drive, false otherwise, still returns true if nobody got on
      */
     @Override
-    public boolean addPassenger(int distance, String[] passengers) {
+    public boolean addPassengers(int distance, String[] passengers) {
         if (!canDrive(distance)) {
             return false;
         }
+        int actuallyGotOntoBus = 0;
         for (int i = 0; i < passengers.length; i++) {
             for (int j = 0; j < this.passengers.length; j++) {
                 if (this.passengers[j] == null) {
                     this.passengers[j] = passengers[i];
+                    actuallyGotOntoBus++;
                     break;
                 }
             }
         }
-        int currPassengers = 0;
-        for (int i = 0; i < this.passengers.length; i++) {
-            if (this.passengers[i] == null) {
-                currPassengers += 1;
-            }
-        }
-        chargeRide(distance, currPassengers);
+        chargeRide(distance, actuallyGotOntoBus);
         return true;
     }
 
@@ -110,10 +108,7 @@ public class Bus extends Vehicle {
      */
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + location.hashCode();
-        result = 31 * result + stopsPerMile;
-        return result;
+        return super.hashCode() + this.location.hashCode() + Integer.hashCode(this.stopsPerMile);
     }
 
     /**

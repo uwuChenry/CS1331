@@ -1,6 +1,7 @@
 /**
- * The Car class represents a car that extends the Vehicle class.
- * It includes additional properties such as rate, fees, and maxNumMiles.
+ * The Car class extends the Vehicle class.
+ * @author Po Cheng Chen
+ * @version 1.0
  */
 public class Car extends Vehicle {
     private double rate;
@@ -80,7 +81,7 @@ public class Car extends Vehicle {
      * @return true if the passengers were added, false otherwise
      */
     @Override
-    public boolean addPassenger(int distance, String[] newPassengers) {
+    public boolean addPassengers(int distance, String[] newPassengers) {
         if (!canDrive(distance)) {
             return false;
         }
@@ -116,7 +117,18 @@ public class Car extends Vehicle {
             return false;
         }
         Car other = (Car) obj;
-        return super.equals(obj) && this.rate == other.rate && this.fees == other.fees && this.maxNumMiles == other.maxNumMiles;
+        return super.equals(obj)
+            && this.rate == other.rate
+            && this.fees == other.fees
+            && this.maxNumMiles == other.maxNumMiles;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode()
+            + Double.hashCode(this.rate)
+            + Double.hashCode(this.fees)
+            + Integer.hashCode(this.maxNumMiles);
     }
 
     /**
@@ -127,6 +139,9 @@ public class Car extends Vehicle {
     @Override
     public String toString() {
         String temp = "Car " + super.toString();
-        return temp + String.format(" It can only drive %d miles. It costs %.2f dollars per mile and there is a one-time fee of %.2f dollars.", this.maxNumMiles, this.rate, this.fees);
+        return temp
+            + String.format(
+        " It can only drive %d miles. It costs %.2f dollars per mile and there is a one-time fee of %.2f dollars.",
+            this.maxNumMiles, this.rate, this.fees);
     }
 }
