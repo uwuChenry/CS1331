@@ -1,3 +1,4 @@
+package HW3;
 /**
  * The Vehicle class represents a generic vehicle with an ID, earnings, miles traveled, and passengers.
  * @author Po Cheng Chen
