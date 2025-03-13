@@ -1,5 +1,5 @@
 /**
- * The Admittable interface
+ * The Admittable interface.
  * @author Po Cheng Chen
  * @version 1.0
  */

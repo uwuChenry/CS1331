@@ -1,13 +1,13 @@
 /**
- * Attraction implements Admittable and Comparable<Attraction>.
+ * Attraction implements Admittable and Comparable.
  * @author Po Cheng Chen
  * @version 1.0
  */
 public class Attraction implements Admittable, Comparable<Attraction> {
-    protected final String name;
+    private final String name;
     private long sumRatings = 0;
     private int numRatings = 0;
-    protected final double admissionFee;
+    private final double admissionFee;
     private Group[] visitors = new Group[5];
 
     /**
@@ -184,5 +184,23 @@ public class Attraction implements Admittable, Comparable<Attraction> {
             }
         }
         return 0;
+    }
+
+    /**
+     * Returns the admission fee of the attraction.
+     *
+     * @return the admission fee of the attraction
+     */
+    public double getAdmissionFee() {
+        return admissionFee;
+    }
+
+    /**
+     * Returns the name of the attraction.
+     *
+     * @return the name of the attraction
+     */
+    public String getName() {
+        return name;
     }
 }

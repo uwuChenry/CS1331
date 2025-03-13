@@ -80,7 +80,7 @@ public class RollerCoaster extends Attraction {
      */
     @Override
     public String toString() {
-        return String.format("Rollercoaster: %s/%.2f/%.2f/%.2f",
-            this.name, this.averageRating(), this.admissionFee, this.percentOccupancy());
+        return String.format("RollerCoaster: %s/%.2f/%.2f/%.2f%%",
+            this.getName(), this.averageRating(), this.getAdmissionFee(), this.percentOccupancy());
     }
 }

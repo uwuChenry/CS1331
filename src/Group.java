@@ -8,7 +8,7 @@ public class Group {
 
     /**
      * Constructs a Group with the specified array of people.
-     * 
+     *
      * @param people an array of people's names
      */
     public Group(String[] people) {
@@ -24,7 +24,7 @@ public class Group {
 
     /**
      * Returns the number of non-null people in the group.
-     * 
+     *
      * @return the size of the group
      */
     public int size() {
@@ -39,7 +39,7 @@ public class Group {
 
     /**
      * Returns a string representation of the group.
-     * 
+     *
      * @return a string containing all people's names separated by "/"
      */
     @Override
