@@ -1,3 +1,8 @@
+/**
+ * Attraction implements Admittable and Comparable<Attraction>.
+ * @author Po Cheng Chen
+ * @version 1.0
+ */
 public class Attraction implements Admittable, Comparable<Attraction> {
     protected final String name;
     private long sumRatings = 0;
@@ -5,6 +10,12 @@ public class Attraction implements Admittable, Comparable<Attraction> {
     protected final double admissionFee;
     private Group[] visitors = new Group[5];
 
+    /**
+     * Constructs an Attraction with the specified name and admission fee.
+     *
+     * @param name the name of the attraction
+     * @param admissionFee the admission fee for the attraction
+     */
     public Attraction(String name, double admissionFee) {
         if (name == null || name.trim().equals("")) {
             this.name = "No name";
@@ -18,10 +29,20 @@ public class Attraction implements Admittable, Comparable<Attraction> {
         }
     }
 
+    /**
+     * Constructs an Attraction with the specified name and a default admission fee of 5.25.
+     *
+     * @param name the name of the attraction
+     */
     public Attraction(String name) {
         this(name, 5.25);
     }
 
+    /**
+     * Admits a group of visitors to the attraction.
+     *
+     * @param names the names of the visitors
+     */
     @Override
     public void admit(String[] names) {
         Group[] groups = visitorsToGroups(names);
@@ -30,6 +51,11 @@ public class Attraction implements Admittable, Comparable<Attraction> {
         }
     }
 
+    /**
+     * Adds a group of visitors to the attraction.
+     *
+     * @param newGroup the group of visitors to add
+     */
     protected void addVisitGroup(Group newGroup) {
         boolean success = false;
         for (int i = 0; i < this.visitors.length; i++) {
@@ -49,6 +75,12 @@ public class Attraction implements Admittable, Comparable<Attraction> {
         }
     }
 
+    /**
+     * Converts an array of visitor names into groups of up to 5 visitors each.
+     *
+     * @param names visitors
+     * @return array of groups
+     */
     protected Group[] visitorsToGroups(String[] names) {
         int numGroup = (int) Math.ceil(names.length / 5.0);
         Group[] groups = new Group[numGroup];
@@ -62,6 +94,13 @@ public class Attraction implements Admittable, Comparable<Attraction> {
         return groups;
     }
 
+    /**
+     * Rates the attraction and removes a group of visitors at the specified index.
+     *
+     * @param index the index of the group to remove
+     * @param rating the rating given by the group
+     * @return the size of the group that was removed
+     */
     public int rateAndExit(int index, int rating) {
         if (index < 0 || index >= this.visitors.length || this.visitors[index] == null) {
             System.out.println("Could not update rating. Index invalid.");
@@ -84,6 +123,11 @@ public class Attraction implements Admittable, Comparable<Attraction> {
         return temp;
     }
 
+    /**
+     * Calculates the average rating of the attraction.
+     *
+     * @return the average rating of the attraction
+     */
     public double averageRating() {
         if (this.numRatings == 0) {
             return 0;
@@ -91,11 +135,19 @@ public class Attraction implements Admittable, Comparable<Attraction> {
         return Math.round((double) this.sumRatings / (double) this.numRatings * 100.0) / 100.0;
     }
 
+    /**
+     * Returns a string representation of the attraction.
+     *
+     * @return a string representation of the attraction
+     */
     @Override
     public String toString() {
         return String.format("%s/%.2f/%.2f", this.name, this.averageRating(), this.admissionFee);
     }
 
+    /**
+     * Prints visitors.
+     */
     public void printVisitors() {
         System.out.println(toString());
         for (int i = 0; i < this.visitors.length; i++) {
@@ -106,6 +158,12 @@ public class Attraction implements Admittable, Comparable<Attraction> {
         }
     }
 
+    /**
+     * Compares this attraction to another attraction based on average rating and admission fee.
+     *
+     * @param other the other attraction to compare to
+     * @return a negative integer, zero, or a positive integer
+     */
     @Override
     public int compareTo(Attraction other) {
         if (other == null) {

@@ -1,4 +1,14 @@
+/**
+ * Driver class.
+ * @author Po Cheng Chen
+ * @version 1.0
+ */
 public class TripGuide {
+    /**
+     * The main method for testing
+     *
+     * @param args Command line arguments.
+     */
     public static void main(String[] args) {
         
         Attraction[] attractions = {
