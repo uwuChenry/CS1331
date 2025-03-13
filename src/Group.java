@@ -12,7 +12,13 @@ public class Group {
         }
     }
     public int size() {
-        return people.length;
+        int temp = 0;
+        for (int i = 0; i < people.length; i++) {
+            if (people[i] != null) {
+                temp++;
+            }
+        }
+        return temp;
     }
 
     @Override
