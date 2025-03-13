@@ -1,3 +1,4 @@
+package HW4;
 /**
  * Represents a RollerCoaster attraction.
  * @author Po Cheng Chen

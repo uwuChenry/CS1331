@@ -1,3 +1,5 @@
+package HW4;
+
 /**
  * Attraction implements Admittable and Comparable.
  * @author Po Cheng Chen

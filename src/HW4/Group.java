@@ -1,3 +1,4 @@
+package HW4;
 /**
  * Represents a group of visitors.
  * @author Po Cheng Chen
