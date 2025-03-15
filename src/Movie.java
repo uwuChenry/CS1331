@@ -11,8 +11,19 @@ public class Movie extends Media {
 
     @Override
     public String toString() {
-        return String.format("Genre: %s, Name: %s, Rating: %d, Rental Price: $%.2f, Runtime: %d}", 
-                super.getGenre(), super.getName(), super.getRating(), super.getRentalPrice(), runtime);
+        return super.toString() + 
+                String.format(", Runtime: %d minutes", runtime);
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
+        if (!super.equals(other)) return false;
+        Movie movie = (Movie) other;
+        return this.runtime == movie.runtime;
+    }
+
+
 
 }

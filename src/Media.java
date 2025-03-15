@@ -27,6 +27,10 @@ public abstract class Media implements Comparable <Media> {
         return rentalPrice;
     }
 
+    public Genre getGenre() {
+        return genre;
+    }
+
     @Override
     public String toString() {
         return String.format("Genre: %s, Name: %s, Rating: %d, Rental Price: $%.2f", 
