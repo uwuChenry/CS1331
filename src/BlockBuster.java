@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 
-public class BlockBuster {
-    ArrayList <Media> inventory;
+public class Blockbuster {
+    private ArrayList<Media> inventory;
 
-    public BlockBuster() {
+    public Blockbuster() {
         inventory = new ArrayList<>();
     }
 

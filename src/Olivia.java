@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 
 public class Olivia {
-    static double budget;
-    static ArrayList<Media> cart;
-    static boolean canUseConsole;
+    private static double budget;
+    private static ArrayList<Media> cart;
+    private static boolean canUseConsole;
 
-    public static boolean addToCart(Media media, BlockBuster store) {
+    public static boolean addToCart(Media media, Blockbuster store) {
         if (budget < media.getRentalPrice()) return false;
         Media foundMedia = store.findMedia(media);
         if (foundMedia == null) return false;
@@ -23,7 +23,7 @@ public class Olivia {
         return false;
     }
 
-    public static void changeMind(Media media, BlockBuster store) {
+    public static void changeMind(Media media, Blockbuster store) {
         int index = -1;
         for (int i = 0; i < cart.size(); i++) {
             if (cart.get(i).equals(media)) {

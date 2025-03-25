@@ -1,24 +1,24 @@
 public class VideoGame extends Media{
     private int maxPlayers;
-    private boolean needConsole;
+    private boolean needsConsole;
     
     public VideoGame(Genre genre, String name, int rating, double rentalPrice, int maxPlayers, boolean needConsole) {
         super(genre, name, rating, rentalPrice);
         this.maxPlayers = maxPlayers;
-        this.needConsole = needConsole;
+        this.needsConsole = needConsole;
     }
 
     public VideoGame(Genre genre, String name, int rating) {
         super(genre, name, rating, 5.0);
         maxPlayers = 2;
-        needConsole = false;
+        needsConsole = false;
     }
 
     @Override
     public String toString() {
         return super.toString() + 
-                String.format(", layers: %d, ", maxPlayers) +
-                String.format("%s need a console", needConsole ? "does" : "does not");
+                String.format(", Players: %d, ", maxPlayers) +
+                String.format("%s need a console", needsConsole ? "does" : "does not");
     }
 
     @Override
@@ -28,10 +28,10 @@ public class VideoGame extends Media{
         if (!super.equals(other)) return false;
         VideoGame videoGame = (VideoGame) other;
         return this.maxPlayers == videoGame.maxPlayers &&
-               this.needConsole == videoGame.needConsole;
+               this.needsConsole == videoGame.needsConsole;
     }
 
     public boolean needConsole() {
-        return needConsole;
+        return needsConsole;
     }
 }
