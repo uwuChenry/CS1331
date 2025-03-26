@@ -12,7 +12,7 @@ public class Movie extends Media {
     @Override
     public String toString() {
         return super.toString() + 
-                String.format(", Runtime: %d minutes", runtime);
+                String.format(", Runtime: %d", runtime);
     }
 
     @Override

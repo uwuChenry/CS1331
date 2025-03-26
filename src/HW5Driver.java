@@ -66,7 +66,9 @@ public class HW5Driver {
         String movie1p = "Genre: ACTION, Name: Iron Man, Rating: 8, Rental Price: $6.00, Runtime: 90";
         String movie2p = "Genre: COMEDY, Name: Monsters Inc., Rating: 7, Rental Price: $5.00, Runtime: 111";
         // System.out.println(movie1p);
-        // System.out.println(movie1);
+        // System.out.println(movie2p);
+        // System.out.println(movie1.toString());
+        // System.out.println(movie2.toString());
         System.out.println("Movie toString test: " + movie1p.equals(movie1.toString()));
         System.out.println("Movie toString test2: " + movie2p.equals(movie2.toString()));
         String videoString1 = "Genre: ACTION, Name: Skylanders, Rating: 6, Rental Price: $20.00, Players: 2," +
@@ -102,7 +104,9 @@ public class HW5Driver {
         // theLastBlockBuster.printArray(); // if you implement print array you should delete it...
         Media search = theLastBlockBuster.findMedia(inventory4[5]);
         System.out.println("FindMedia test: "+ inventory4[5].toString().equals(search.toString()));
+        theLastBlockBuster.printAllMovie();
         Movie mostPopularMovie = theLastBlockBuster.getMostPopularMovie();
+        System.out.println(mostPopularMovie.toString());
         System.out.println("MostPopularMovie test: " + mostPopularMovie.toString().equals(inventory1[0].toString()));
 
 
@@ -115,6 +119,7 @@ public class HW5Driver {
         System.out.println("Inventory equals test2: " + (test4 == false)); // should return false
 
         System.out.println("addToCart test0: " + (Olivia.addToCart(inventory4[5],theLastBlockBuster) == true));// should add the Movie Godzilla
+        System.out.println(Olivia.addToCart(inventory4[5], theLastBlockBuster));
 
         System.out.println("addToCart test1: " + (Olivia.addToCart(inventory3[1], theLastBlockBuster) == true)); // should add the Movie FNAF, return true
         System.out.println("addToCart test2: " + (Olivia.addToCart(inventory1[0], theLastBlockBuster)== true)); // should add the Movie Up and should, return true

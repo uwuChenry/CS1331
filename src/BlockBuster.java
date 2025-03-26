@@ -65,13 +65,26 @@ public class Blockbuster {
         for (Media media : inventory) {
             if (media instanceof Movie) {
                 if (mostPopular == null || media.getRating() >= mostPopular.getRating()) {
-                    if (media.equals(mostPopular) && media.getName().compareTo(mostPopular.getName()) < 0) {
+                    if (mostPopular == null) {
                         mostPopular = (Movie) media;
-
+                    }
+                    if (media.getRating() > mostPopular.getRating()) {
+                        mostPopular = (Movie) media;
+                    }
+                    if (media.getRating() == mostPopular.getRating() && media.getName().compareTo(mostPopular.getName()) < 0) {
+                        mostPopular = (Movie) media;
                     }
                 }
             }
         }
         return mostPopular;
+    }
+
+    public void printAllMovie(){
+        for (Media media : inventory) {
+            if (media instanceof Movie) {
+                System.out.println(media);
+            }
+        }
     }
 }

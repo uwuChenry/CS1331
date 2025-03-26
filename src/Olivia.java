@@ -5,6 +5,11 @@ public class Olivia {
     private static ArrayList<Media> cart;
     private static boolean canUseConsole;
 
+    public static void printBudget(){
+        System.out.println("Budget: " + budget);
+    }
+    
+
     public static boolean addToCart(Media media, Blockbuster store) {
         if (budget < media.getRentalPrice()) return false;
         Media foundMedia = store.findMedia(media);
