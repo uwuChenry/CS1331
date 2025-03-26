@@ -11,15 +11,21 @@ public class Movie extends Media {
 
     @Override
     public String toString() {
-        return super.toString() + 
-                String.format(", Runtime: %d", runtime);
+        return super.toString()
+            + String.format(", Runtime: %d", runtime);
     }
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) return true;
-        if (other == null || getClass() != other.getClass()) return false;
-        if (!super.equals(other)) return false;
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
+        if (!super.equals(other)) {
+            return false;
+        }
         Movie movie = (Movie) other;
         return this.runtime == movie.runtime;
     }

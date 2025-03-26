@@ -104,9 +104,9 @@ public class HW5Driver {
         // theLastBlockBuster.printArray(); // if you implement print array you should delete it...
         Media search = theLastBlockBuster.findMedia(inventory4[5]);
         System.out.println("FindMedia test: "+ inventory4[5].toString().equals(search.toString()));
-        theLastBlockBuster.printAllMovie();
+        // theLastBlockBuster.printAllMovie();
         Movie mostPopularMovie = theLastBlockBuster.getMostPopularMovie();
-        System.out.println(mostPopularMovie.toString());
+        // System.out.println(mostPopularMovie.toString());
         System.out.println("MostPopularMovie test: " + mostPopularMovie.toString().equals(inventory1[0].toString()));
 
 
@@ -119,7 +119,7 @@ public class HW5Driver {
         System.out.println("Inventory equals test2: " + (test4 == false)); // should return false
 
         System.out.println("addToCart test0: " + (Olivia.addToCart(inventory4[5],theLastBlockBuster) == true));// should add the Movie Godzilla
-        System.out.println(Olivia.addToCart(inventory4[5], theLastBlockBuster));
+        // System.out.println(Olivia.addToCart(inventory4[5], theLastBlockBuster));
 
         System.out.println("addToCart test1: " + (Olivia.addToCart(inventory3[1], theLastBlockBuster) == true)); // should add the Movie FNAF, return true
         System.out.println("addToCart test2: " + (Olivia.addToCart(inventory1[0], theLastBlockBuster)== true)); // should add the Movie Up and should, return true
@@ -128,8 +128,9 @@ public class HW5Driver {
 
         
         System.out.println("Invalid addToCart test: " + (Olivia.addToCart(new VideoGame(Genre.FANTASY, "Sonic Adventure 2", 10), theLastBlockBuster) == false));//should return false
+        Olivia.printCart();
         Olivia.changeMind(inventory1[2], theLastBlockBuster); //Should remove the It movie
-
+        Olivia.printCart();
         System.out.println("Second getMostPopularMovie test: " + the2000sBlockBuster.getMostPopularMovie().toString().equals(inventory4[0].toString()));
         
     }

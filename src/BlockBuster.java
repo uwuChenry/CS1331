@@ -71,7 +71,8 @@ public class Blockbuster {
                     if (media.getRating() > mostPopular.getRating()) {
                         mostPopular = (Movie) media;
                     }
-                    if (media.getRating() == mostPopular.getRating() && media.getName().compareTo(mostPopular.getName()) < 0) {
+                    if (media.getRating() == mostPopular.getRating()
+                        && media.getName().compareTo(mostPopular.getName()) < 0) {
                         mostPopular = (Movie) media;
                     }
                 }
@@ -80,7 +81,7 @@ public class Blockbuster {
         return mostPopular;
     }
 
-    public void printAllMovie(){
+    public void printAllMovie() {
         for (Media media : inventory) {
             if (media instanceof Movie) {
                 System.out.println(media);

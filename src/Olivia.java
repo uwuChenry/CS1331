@@ -1,26 +1,40 @@
 import java.util.ArrayList;
 
 public class Olivia {
-    private static double budget;
-    private static ArrayList<Media> cart;
-    private static boolean canUseConsole;
+    private static double budget = 1000;
+    private static ArrayList<Media> cart = new ArrayList<>();
+    private static boolean canUseConsole = true;
 
-    public static void printBudget(){
+    public static void printBudget() {
         System.out.println("Budget: " + budget);
     }
-    
+
+    public static void printCart() {
+        System.out.println("Cart: ");
+        for (Media media : cart) {
+            System.out.println(media);
+        }
+    }
 
     public static boolean addToCart(Media media, Blockbuster store) {
-        if (budget < media.getRentalPrice()) return false;
+        if (budget < media.getRentalPrice()) {
+            System.out.println("Not enough budget");
+            return false;
+        }
         Media foundMedia = store.findMedia(media);
-        if (foundMedia == null) return false;
+        if (foundMedia == null) {
+            System.out.println("Media not found");
+            return false;
+        }
 
         if (media instanceof VideoGame && !canUseConsole) {
+            System.out.println("Cannot rent video game without console");
             return false;
         }
 
         Media removedMedia = store.removeMedia(foundMedia);
         if (removedMedia != null) {
+            System.out.println("Added to cart: " + removedMedia);
             cart.add(removedMedia);
             budget -= removedMedia.getRentalPrice();
             return true;

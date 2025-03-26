@@ -1,4 +1,4 @@
-public abstract class Media implements Comparable <Media> {
+public abstract class Media implements Comparable<Media> {
     private Genre genre;
     private String name;
     private int rating;
@@ -33,19 +33,23 @@ public abstract class Media implements Comparable <Media> {
 
     @Override
     public String toString() {
-        return String.format("Genre: %s, Name: %s, Rating: %d, Rental Price: $%.2f", 
+        return String.format("Genre: %s, Name: %s, Rating: %d, Rental Price: $%.2f",
                 genre, name, rating, rentalPrice);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
         Media media = (Media) obj;
-        return this.rating == media.rating &&
-               Double.compare(media.rentalPrice, this.rentalPrice) == 0 &&
-               this.genre == media.genre &&
-               this.name.equals(media.name);
+        return this.rating == media.rating
+            && Double.compare(media.rentalPrice, this.rentalPrice) == 0
+            && this.genre == media.genre
+            && this.name.equals(media.name);
     }
     @Override
     public int compareTo(Media other) {
@@ -58,6 +62,5 @@ public abstract class Media implements Comparable <Media> {
             return nameComparison;
         }
         return Integer.compare(this.rating, other.rating);
-    }
-    
+    }    
 }
