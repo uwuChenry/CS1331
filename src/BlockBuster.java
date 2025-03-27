@@ -1,16 +1,33 @@
 import java.util.ArrayList;
 
+/**
+ * The Blockbuster class represents a collection of media items.
+ */
 public class Blockbuster {
     private ArrayList<Media> inventory;
 
+    /**
+     * Constructs a new Blockbuster instance with an empty inventory.
+     */
     public Blockbuster() {
         inventory = new ArrayList<>();
     }
 
+    /**
+     * Adds a media item to the inventory.
+     *
+     * @param media the media item to add
+     */
     public void addMedia(Media media) {
         inventory.add(media);
     }
 
+    /**
+     * Removes a media item from the inventory.
+     *
+     * @param media the media item to remove
+     * @return the removed media item if it was found, or {@code null} if it was not found
+     */
     public Media removeMedia(Media media) {
         int index = -1;
         for (int i = 0; i < inventory.size(); i++) {
@@ -26,6 +43,9 @@ public class Blockbuster {
         }
     }
 
+    /**
+     * Sorts the inventory of media items in ascending order based on their natural ordering.
+     */
     public void sortMedia() {
         int size = inventory.size();
         for (int i = 0; i < size - 1; i++) {
@@ -43,6 +63,13 @@ public class Blockbuster {
         }
     }
 
+    /**
+     * Finds a media item in the inventory using binary search.
+     * The inventory must be sorted before calling this method.
+     *
+     * @param other the media item to find
+     * @return the media item if found, or {@code null} if not found
+     */
     public Media findMedia(Media other) {
         int left = 0;
         int right = inventory.size() - 1;
@@ -60,6 +87,11 @@ public class Blockbuster {
         return null;
     }
 
+    /**
+     * Retrieves the most popular movie in the inventory.
+     *
+     * @return the most popular movie, or null if no movies
+     */
     public Movie getMostPopularMovie() {
         Movie mostPopular = null;
         for (Media media : inventory) {
@@ -81,6 +113,9 @@ public class Blockbuster {
         return mostPopular;
     }
 
+    /**
+     * Prints all movies.
+     */
     public void printAllMovie() {
         for (Media media : inventory) {
             if (media instanceof Movie) {

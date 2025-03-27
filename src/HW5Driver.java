@@ -128,9 +128,9 @@ public class HW5Driver {
 
         
         System.out.println("Invalid addToCart test: " + (Olivia.addToCart(new VideoGame(Genre.FANTASY, "Sonic Adventure 2", 10), theLastBlockBuster) == false));//should return false
-        Olivia.printCart();
+        // Olivia.printCart();
         Olivia.changeMind(inventory1[2], theLastBlockBuster); //Should remove the It movie
-        Olivia.printCart();
+        // Olivia.printCart();
         System.out.println("Second getMostPopularMovie test: " + the2000sBlockBuster.getMostPopularMovie().toString().equals(inventory4[0].toString()));
         
     }
