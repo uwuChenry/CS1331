@@ -1,6 +1,7 @@
 /**
- * The Movie class represents a specific type of media, a movie, which extends the Media class.
- * It includes additional attributes such as runtime.
+ * The Movie class.
+ * @author Po Cheng Chen
+ * @version 1.0
  */
 public class Movie extends Media {
 

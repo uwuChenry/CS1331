@@ -1,6 +1,5 @@
 /**
- * The VideoGame class represents a specific type of media, a video game, which extends the Media class.
- * It includes additional attributes such as the maximum number of players and whether a console is required.
+ * The VideoGame class.
  * @author Po Cheng Chen
  * @version 1.0
  */
@@ -10,7 +9,7 @@ public class VideoGame extends Media {
     private boolean needsConsole;
 
     /**
-     * Constructs a VideoGame object with the specified genre, name, rating, rental price, maximum players, and console requirement.
+     * Constructs a VideoGame object.
      *
      * @param genre        the genre of the video game
      * @param name         the name of the video game
@@ -26,9 +25,7 @@ public class VideoGame extends Media {
     }
 
     /**
-     * Constructs a VideoGame object with the specified genre, name, and rating.
-     * The rental price is set to a default value of $5.00, the maximum players is set to 2, 
-     * and the console requirement is set to false.
+     * Constructs a VideoGame object.
      *
      * @param genre  the genre of the video game
      * @param name   the name of the video game
@@ -55,7 +52,6 @@ public class VideoGame extends Media {
 
     /**
      * Compares this video game object to another object for equality.
-     * Two video games are considered equal if they have the same attributes, including maximum players and console requirement.
      *
      * @param other the object to compare to
      * @return true if the objects are equal, false otherwise

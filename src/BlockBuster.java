@@ -2,6 +2,8 @@ import java.util.ArrayList;
 
 /**
  * The Blockbuster class represents a collection of media items.
+ * @author Po Cheng Chen
+ * @version 1.0
  */
 public class Blockbuster {
     private ArrayList<Media> inventory;

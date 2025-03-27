@@ -1,6 +1,7 @@
 /**
- * The Media class represents an abstract media item with attributes such as genre, name, rating, and rental price.
- * It implements the Comparable interface to allow comparison between media items.
+ * The Media class.
+ * @author Po Cheng Chen
+ * @version 1.0
  */
 public abstract class Media implements Comparable<Media> {
 
@@ -109,7 +110,7 @@ public abstract class Media implements Comparable<Media> {
      * The comparison is based on genre, then name, and finally rating.
      *
      * @param other the media object to compare to
-     * @return a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object
+     * @return a negative integer, zero, or a positive integer
      */
     @Override
     public int compareTo(Media other) {
