@@ -1,3 +1,4 @@
+package HW5;
 /**
  * The VideoGame class.
  * @author Po Cheng Chen
