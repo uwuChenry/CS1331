@@ -50,4 +50,22 @@ public class Record {
             && duration.equals(record.duration)
             && releaseDate.equals(record.releaseDate);
     }
+    public char getGrade() {
+        return grade;
+    }
+    public void setGrade(char grade) {
+        if (grade != 'M' || grade != 'E' || grade != 'G' || grade != 'F' || grade != 'P') {
+            return;
+        }
+        this.grade = grade;
+    }
+    public int getTimesPlayed() {
+        return timesPlayed;
+    }
+    public void setTimesPlayed(int timesPlayed) {
+        if (timesPlayed < 0) {
+            return;
+        }
+        this.timesPlayed = timesPlayed;
+    }
 }
