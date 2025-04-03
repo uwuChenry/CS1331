@@ -1,7 +1,21 @@
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+/**
+ * Utility class for managing a collection of music records.
+ *
+ * @author Po Cheng Chen
+ * @version 1.0
+ */
 public class Songs {
+    /**
+     * Retrieves all records from a file.
+     *
+     * @param path the path to the file containing record data
+     * @return an ArrayList containing all records from the file
+     * @throws FileNotFoundException if the specified file cannot be found
+     * @throws InvalidSongException if the file contains an invalid record
+     */
     public static ArrayList<Record> retrieveRecords(String path) throws FileNotFoundException, InvalidSongException {
         ArrayList<Record> records = new ArrayList<>();
         try (java.util.Scanner scanner = new java.util.Scanner(new java.io.File(path))) {
@@ -15,7 +29,15 @@ public class Songs {
         return records;
     }
 
-    private static Record processInfo(String line) throws InvalidSongException{
+    /**
+     * Processes a line of text into a Record object.
+     * The format should be: type,artist,title,duration,releaseDate,timesPlayed,grade,playable,producer
+     *
+     * @param line the line of text to process
+     * @return a Record object created from the data in the line
+     * @throws InvalidSongException if the line does not represent a valid record
+     */
+    private static Record processInfo(String line) throws InvalidSongException {
         String[] parts = line.split(",");
         if (!(parts[0].trim().equals("JazzRecord") || parts[0].trim().equals("RapRecord"))) {
             throw new InvalidSongException();
@@ -39,7 +61,19 @@ public class Songs {
         }
     }
 
-    public static void stockJukeBox(String path, ArrayList<Record> records) throws FileNotFoundException, InvalidSongException {
+    /**
+     * Adds records to a file representing a jukebox.
+     * If the file does not exist, it will be created.
+     * If the file exists, the new records will be added to the existing ones.
+     * Records with a grade of 'P' (poor) will not be written to the file.
+     *
+     * @param path the path to the file representing the jukebox
+     * @param records the records to add to the jukebox
+     * @throws FileNotFoundException if the file cannot be accessed or created
+     * @throws InvalidSongException if the file contains an invalid record
+     */
+    public static void stockJukeBox(String path, ArrayList<Record> records)
+        throws FileNotFoundException, InvalidSongException {
         java.io.File file = new java.io.File(path);
         ArrayList<Record> oldRecords = new ArrayList<>();
         if (file.exists()) {
@@ -62,7 +96,7 @@ public class Songs {
         oldRecords.addAll(records);
         try (java.io.PrintWriter writer = new java.io.PrintWriter(file)) {
             for (Record record : oldRecords) {
-                if (record.getGrade() =='P') {
+                if (record.getGrade() == 'P') {
                     continue;
                 }
                 writer.println(record.toString());
@@ -70,10 +104,20 @@ public class Songs {
         } catch (java.io.IOException e) {
             throw new FileNotFoundException();
         }
-
     }
 
-    public static ArrayList<Integer> findSongs(String path, Record record) throws FileNotFoundException, IllegalArgumentException, InvalidSongException {
+    /**
+     * Finds all occurrences of a record in a file.
+     *
+     * @param path the path to the file to search in
+     * @param record the record to search for
+     * @return an ArrayList containing the indices of all occurrences of the record
+     * @throws FileNotFoundException if the specified file cannot be found
+     * @throws IllegalArgumentException if the record parameter is null
+     * @throws InvalidSongException if the record is not found in the file
+     */
+    public static ArrayList<Integer> findSongs(String path, Record record)
+            throws FileNotFoundException, IllegalArgumentException, InvalidSongException {
         if (record == null) {
             throw new IllegalArgumentException();
         }
@@ -91,10 +135,18 @@ public class Songs {
         }
     }
 
+    /**
+     * Plays a record from the file, updating its play count and potentially damaging it.
+     * The record has a 30% chance to be scratched, lowering its grade.
+     *
+     * @param path the path to the file containing the record
+     * @param record the record to play
+     * @throws FileNotFoundException if the specified file cannot be found
+     * @throws InvalidSongException if the record is not found in the file
+     */
     public static void playSong(String path, Record record) throws FileNotFoundException, InvalidSongException {
         ArrayList<Integer> indexes = findSongs(path, record);
         ArrayList<Record> records = retrieveRecords(path);
-        // ArrayList<Record> newRecords = new ArrayList<>();
 
         for (int index : indexes) {
             Record r = records.get(index);
@@ -108,20 +160,20 @@ public class Songs {
             if (Math.random() < 0.3) {
                 System.out.println("scratching record ..................................");
                 switch (currentGrade) {
-                    case 'M':
-                        newGrade = 'E';
-                        break;
-                    case 'E':
-                        newGrade = 'G';
-                        break;
-                    case 'G':
-                        newGrade = 'F';
-                        break;
-                    case 'F':
-                        newGrade = 'P';
-                        break;
-                    default:
-                        newGrade = currentGrade; 
+                case 'M':
+                    newGrade = 'E';
+                    break;
+                case 'E':
+                    newGrade = 'G';
+                    break;
+                case 'G':
+                    newGrade = 'F';
+                    break;
+                case 'F':
+                    newGrade = 'P';
+                    break;
+                default:
+                    newGrade = currentGrade;
                 }
                 r.setGrade(newGrade);
             }
@@ -138,7 +190,16 @@ public class Songs {
         }
     }
 
-    public static void removeSong(String path, Record record) throws FileNotFoundException, InvalidSongException {
+    /**
+     * Removes all occurrences of a record from a file.
+     *
+     * @param path the path to the file containing the record
+     * @param record the record to remove
+     * @throws FileNotFoundException if the specified file cannot be found
+     * @throws InvalidSongException if the record is not found in the file
+     * @throws IllegalArgumentException if the record parameter is null
+     */
+    public static void removeRecord(String path, Record record) throws FileNotFoundException, InvalidSongException {
         if (record == null) {
             throw new IllegalArgumentException();
         }
@@ -148,8 +209,9 @@ public class Songs {
         try {
             ArrayList<Integer> indexes = findSongs(path, record);
             ArrayList<Record> records = retrieveRecords(path);
-            for (int i = 0; i < indexes.size(); i++) {
-                records.remove(record);
+            for (int i = indexes.size() - 1; i >= 0; i--) {
+                int indexToRemove = indexes.get(i);
+                records.remove(indexToRemove);
             }
             try (java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.File(path))) {
                 for (Record r : records) {
