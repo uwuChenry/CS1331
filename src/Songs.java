@@ -1,5 +1,4 @@
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Songs {
@@ -40,7 +39,7 @@ public class Songs {
         }
     }
 
-    public void stockJukeBox(String path, ArrayList<Record> records) throws FileNotFoundException, InvalidSongException {
+    public static void stockJukeBox(String path, ArrayList<Record> records) throws FileNotFoundException, InvalidSongException {
         java.io.File file = new java.io.File(path);
         ArrayList<Record> oldRecords = new ArrayList<>();
         if (file.exists()) {
@@ -92,42 +91,75 @@ public class Songs {
         }
     }
 
-    public static void playSong (String path, Record record) throws FileNotFoundException, InvalidSongException {
+    public static void playSong(String path, Record record) throws FileNotFoundException, InvalidSongException {
         ArrayList<Integer> indexes = findSongs(path, record);
         ArrayList<Record> records = retrieveRecords(path);
-        ArrayList<Record> newRecords = new ArrayList<>();
+        // ArrayList<Record> newRecords = new ArrayList<>();
 
         for (int index : indexes) {
             Record r = records.get(index);
+            if (r.getGrade() == 'P' || !r.isPlayable()) {
+                continue;
+            }
             r.setTimesPlayed(r.getTimesPlayed() + 1);
+            char currentGrade = r.getGrade();
+            char newGrade;
+
             if (Math.random() < 0.3) {
-                // Lower the grade
-                char currentGrade = r.getGrade();
-                char newGrade;
-                
+                System.out.println("scratching record ..................................");
                 switch (currentGrade) {
-                    case 'M': // Mint -> Excellent
+                    case 'M':
                         newGrade = 'E';
                         break;
-                    case 'E': // Excellent -> Good
+                    case 'E':
                         newGrade = 'G';
                         break;
-                    case 'G': // Good -> Fair
+                    case 'G':
                         newGrade = 'F';
                         break;
-                    case 'F': // Fair -> Poor
+                    case 'F':
                         newGrade = 'P';
                         break;
                     default:
-                        newGrade = currentGrade; // Shouldn't happen but just in case
+                        newGrade = currentGrade; 
                 }
-                
-                // Set the new grade
                 r.setGrade(newGrade);
-                System.out.println("Record scratched! Grade lowered to: " + newGrade);
             }
-            newRecords.add(r);
         }
+        try (java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.File(path))) {
+            for (Record r : records) {
+                if (r.getGrade() == 'P') {
+                    continue;
+                }
+                writer.println(r.toString());
+            }
+        } catch (java.io.IOException e) {
+            throw new FileNotFoundException();
+        }
+    }
 
+    public static void removeSong(String path, Record record) throws FileNotFoundException, InvalidSongException {
+        if (record == null) {
+            throw new IllegalArgumentException();
+        }
+        if (path == null || path.isBlank()) {
+            throw new FileNotFoundException();
+        }
+        try {
+            ArrayList<Integer> indexes = findSongs(path, record);
+            ArrayList<Record> records = retrieveRecords(path);
+            for (int i = 0; i < indexes.size(); i++) {
+                records.remove(record);
+            }
+            try (java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.File(path))) {
+                for (Record r : records) {
+                    writer.println(r.toString());
+                }
+            } catch (java.io.IOException e) {
+                throw new FileNotFoundException();
+            }
+        } catch (InvalidSongException e) {
+            throw new InvalidSongException();
+        }
     }
 }

@@ -15,7 +15,7 @@ public class Record {
         if (artist == null || duration == null || releaseDate == null || artist.isBlank() || duration.isBlank() || releaseDate.isBlank()) {
             throw new IllegalArgumentException("Artist, title, duration, and release date cannot be null or blank");
         }
-        if (grade != 'M' || grade != 'E' || grade != 'G' || grade != 'F' || grade != 'P') {
+        if (!(grade == 'M' || grade == 'E' || grade == 'G' || grade == 'F' || grade == 'P')) {
             throw new IllegalArgumentException("Grade must be 'M', 'E', 'G','F' or 'P'");
         }
         if (timesPlayed < 0) {
@@ -54,7 +54,7 @@ public class Record {
         return grade;
     }
     public void setGrade(char grade) {
-        if (grade != 'M' || grade != 'E' || grade != 'G' || grade != 'F' || grade != 'P') {
+        if (!(grade == 'M' || grade == 'E' || grade == 'G' || grade == 'F' || grade == 'P')) {
             return;
         }
         this.grade = grade;
@@ -67,5 +67,9 @@ public class Record {
             return;
         }
         this.timesPlayed = timesPlayed;
+    }
+
+    public boolean isPlayable() {
+        return playable;
     }
 }

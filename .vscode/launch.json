@@ -1,0 +1,105 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Driver",
+            "request": "launch",
+            "mainClass": "Driver",
+            "projectName": "CS1331_2ef6934a"
+        },
+        {
+            "type": "java",
+            "name": "Driver(1)",
+            "request": "launch",
+            "mainClass": "HW1.Driver",
+            "projectName": "CS1331_2ef6934a"
+        },
+        {
+            "type": "java",
+            "name": "HWDriver",
+            "request": "launch",
+            "mainClass": "HW2.HWDriver",
+            "projectName": "CS1331_2ef6934a"
+        },
+        {
+            "type": "java",
+            "name": "JurassicPark",
+            "request": "launch",
+            "mainClass": "HW2.JurassicPark",
+            "projectName": "CS1331_2ef6934a"
+        },
+        {
+            "type": "java",
+            "name": "Driver(2)",
+            "request": "launch",
+            "mainClass": "HW3.Driver",
+            "projectName": "CS1331_2ef6934a"
+        },
+        {
+            "type": "java",
+            "name": "TripGuide",
+            "request": "launch",
+            "mainClass": "HW4.TripGuide",
+            "projectName": "CS1331_2ef6934a"
+        },
+        {
+            "type": "java",
+            "name": "HW5Driver",
+            "request": "launch",
+            "mainClass": "HW5.HW5Driver",
+            "projectName": "CS1331_2ef6934a"
+        },
+        {
+            "type": "java",
+            "name": "ShoppingMall",
+            "request": "launch",
+            "mainClass": "PE1.ShoppingMall",
+            "projectName": "CS1331_2ef6934a"
+        },
+        {
+            "type": "java",
+            "name": "TimeCalculator",
+            "request": "launch",
+            "mainClass": "PE1.TimeCalculator",
+            "projectName": "CS1331_2ef6934a"
+        },
+        {
+            "type": "java",
+            "name": "EuclideanAlgorithm",
+            "request": "launch",
+            "mainClass": "PE2.EuclideanAlgorithm",
+            "projectName": "CS1331_2ef6934a"
+        },
+        {
+            "type": "java",
+            "name": "PokemonBattle",
+            "request": "launch",
+            "mainClass": "PE3.PokemonBattle",
+            "projectName": "CS1331_2ef6934a"
+        },
+        {
+            "type": "java",
+            "name": "Driver(3)",
+            "request": "launch",
+            "mainClass": "PE4.Driver",
+            "projectName": "CS1331_2ef6934a"
+        },
+        {
+            "type": "java",
+            "name": "test",
+            "request": "launch",
+            "mainClass": "test",
+            "projectName": "CS1331_2ef6934a"
+        }
+    ]
+}
