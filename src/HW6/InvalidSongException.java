@@ -1,3 +1,4 @@
+package HW6;
 /**
  * Exception for invalid songs.
  *

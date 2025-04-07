@@ -1,3 +1,4 @@
+package HW6;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 

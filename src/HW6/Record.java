@@ -1,3 +1,4 @@
+package HW6;
 /**
  * Abstract class representing a music record.
  *

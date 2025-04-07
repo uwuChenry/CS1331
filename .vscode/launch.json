@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "MovieTheater",
+            "request": "launch",
+            "mainClass": "MovieTheater",
+            "projectName": "CS1331_2ef6934a"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"

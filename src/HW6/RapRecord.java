@@ -1,3 +1,4 @@
+package HW6;
 /**
  * Represents a rap record in the music collection.
  *
