@@ -79,11 +79,27 @@ public class ComicBookBin {
         Superhero[] filtered = filterByAlliance(heroes, alliance, index + 1);
         if (heroes[index].getAlliance() == alliance) {
             Superhero[] result = new Superhero[filtered.length + 1];
-            System.arraycopy(filtered, 0, result, 1, filtered.length);
+            recursiveCopy(filtered, result, 0, 1);
             result[0] = heroes[index];
             return result;
         }
         return filtered;
+    }
+
+    /**
+     * Recursively copies elements from the source array to the destination array.
+     *
+     * @param source      the source array
+     * @param destination the destination array
+     * @param srcIndex    the current index in the source array
+     * @param destIndex   the current index in the destination array
+     */
+    private static void recursiveCopy(Superhero[] source, Superhero[] destination, int srcIndex, int destIndex) {
+        if (srcIndex >= source.length) {
+            return;
+        }
+        destination[destIndex] = source[srcIndex];
+        recursiveCopy(source, destination, srcIndex + 1, destIndex + 1);
     }
 
     /**
