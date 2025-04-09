@@ -123,6 +123,7 @@ public class MovieTheater {
             theater.watchMovie("f");
             theater.watchMovie("g");
             ArrayList<String> toWatch = theater.selectRecommended(recommended);
+            System.out.println("Recommended movies to watch: " + toWatch);
         } catch (FilmNotFoundException e) {
             System.out.println(e.getMessage());
         } catch (AlreadyWatchedException e) {
