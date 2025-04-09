@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "ComicBookBin",
+            "request": "launch",
+            "mainClass": "ComicBookBin",
+            "projectName": "CS1331_fad2d70"
+        },
+        {
+            "type": "java",
             "name": "MovieTheater",
             "request": "launch",
             "mainClass": "MovieTheater",
