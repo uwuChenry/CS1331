@@ -1,41 +1,75 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-// TODO JAVADOC
+/**
+ * A generic linked list implementation that stores elements of type T.
+ * This linked list is a singly linked structure that implements the List interface.
+ * It maintains a reference to the head of the list and keeps track of its size.
+ * The list does not allow null elements.
+ *
+ * @param <T> the type of elements stored in this linked list
+ * @author Po Cheng Chen
+ * @version 1.0
+ */
 public class LinkedList<T> implements List<T> {
     private Node<T> head;
     private int size;
 
-    // TODO JAVADOC
+    /**
+     * Constructs an empty linked list.
+     * The head is set to null and the size is initialized to 0.
+     */
     public LinkedList() {
         head = null;
         size = 0;
     }
 
-    // TODO JAVADOC
-    public LinkedList(T[] data) {
+    /**
+     * Constructs a linked list containing the elements of the specified array.
+     * The elements are added in the order they appear in the array.
+     *
+     * @param data the array whose elements are to be placed into this list
+     * @throws IllegalArgumentException if the array is null or contains null elements
+     */
+    public LinkedList(T[] data) throws IllegalArgumentException {
+        if (data == null) {
+            throw new IllegalArgumentException("Data cannot be null");
+        }
         for (T datum : data) {
+            if (datum == null) {
+                throw new IllegalArgumentException("Element cannot be null");
+            }
             add(datum); // keep adding to end
         }
     }
 
-    // TODO JAVADOC
+    /**
+     * Returns the head node of this linked list.
+     *
+     * @return the head node of the linked list
+     */
     public Node<T> getHead() {
         return head;
     }
 
-    // TODO JAVADOC
+    /**
+     * Returns an array containing all of the elements in this list in proper sequence.
+     * The elements are placed into the array in the same order they appear in the list.
+     * The implementation uses the iterator to traverse the list.
+     *
+     * @return an array containing all of the elements in this list in proper sequence
+     */
     public T[] toArray() {
         @SuppressWarnings("unchecked")
         T[] array = (T[]) new Object[size];
         Iterator<T> iterator = iterator();
-        
+
         int index = 0;
         while (iterator.hasNext()) {
             array[index] = iterator.next();
             index++;
         }
-        return array; 
+        return array;
     }
 
     @Override
