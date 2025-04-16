@@ -1,3 +1,4 @@
+package HW7;
 /**
  * This enum represents the possible alliances a superhero can be
  * on: AVENGERS, XMEN, and FANTASICFOUR. In addition, each alliance has a

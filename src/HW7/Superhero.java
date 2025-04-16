@@ -1,3 +1,4 @@
+package HW7;
 /**
  * This class represents a superhero.
  * A superhero has a name and is on an alliance, where the strength
