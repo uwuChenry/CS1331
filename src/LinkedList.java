@@ -26,6 +26,9 @@ public class LinkedList<T> implements List<T> {
 
     // TODO JAVADOC
     public T[] toArray() {
+        T[] array = (T[]) new Object[size];
+        Iterator<T> iterator = iterator();
+        
         return null; // FIXME
     }
 
