@@ -1,3 +1,4 @@
+package HW8LinkedList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -180,6 +181,7 @@ public class Driver {
         // Edge Case 8: Constructor with null array should throw IllegalArgumentException
         System.out.println("\nEdge Case 8: Testing constructor with null array");
         try {
+            @SuppressWarnings("unused")
             LinkedList<Integer> nullList = new LinkedList<>(null);
             System.out.println("ERROR: Constructor with null array did not throw an exception");
         } catch (IllegalArgumentException e) {
@@ -190,6 +192,7 @@ public class Driver {
         System.out.println("\nEdge Case 9: Testing constructor with array containing null elements");
         Integer[] arrayWithNull = {1, 2, null, 4, 5};
         try {
+            @SuppressWarnings("unused")
             LinkedList<Integer> nullElemList = new LinkedList<>(arrayWithNull);
             System.out.println("ERROR: Constructor with null elements did not throw an exception");
         } catch (IllegalArgumentException e) {

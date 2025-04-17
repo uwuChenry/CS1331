@@ -1,3 +1,4 @@
+package HW8LinkedList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -63,13 +64,13 @@ public class LinkedList<T> implements List<T> {
         @SuppressWarnings("unchecked")
         T[] array = (T[]) new Object[size];
         Iterator<T> iterator = iterator();
-
+        
         int index = 0;
         while (iterator.hasNext()) {
             array[index] = iterator.next();
             index++;
         }
-        return array;
+        return array; 
     }
 
     @Override

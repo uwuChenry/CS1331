@@ -1,3 +1,4 @@
+package HW8LinkedList;
 /**
  * A generic node class used in linked data structures.
  *
