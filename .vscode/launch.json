@@ -13,6 +13,13 @@
         },
         {
             "type": "java",
+            "name": "Run JungeonJrawler",
+            "request": "launch",
+            "mainClass": "JungeonJrawler",
+            "vmArgs": "--module-path \"${workspaceFolder}/javafx-sdk-21.0.7/lib\" --add-modules javafx.controls,javafx.fxml"
+        },
+        {
+            "type": "java",
             "name": "Node",
             "request": "launch",
             "mainClass": "Node",

@@ -1,0 +1,4 @@
+- better keyboard input handling (you can move in any direction while holding down different keys)
+- added you "you lose" scene with play again button
+- added "you win" scene with play again button
+- added collision check for enemies
