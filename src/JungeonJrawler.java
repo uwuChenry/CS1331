@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -181,11 +182,31 @@ public class JungeonJrawler extends Application {
         playerNameText.setFill(Color.WHITE);
         playerNameText.setFont(Font.font(12));
 
-        Rectangle enemy1Rect = new Rectangle(400, 200, 20, 20);
-        enemy1Rect.setFill(Color.RED);
+        // Rectangle enemy1Rect = new Rectangle(400, 200, 20, 20);
+        // enemy1Rect.setFill(Color.RED);
 
-        Rectangle enemy2Rect = new Rectangle(500, 300, 20, 20);
-        enemy2Rect.setFill(Color.RED);
+        // Rectangle enemy2Rect = new Rectangle(500, 300, 20, 20);
+        // enemy2Rect.setFill(Color.RED);
+
+        ImageView enemy1Rect = new ImageView(new Image("monster.png"));
+        enemy1Rect.setX(400);
+        enemy1Rect.setY(200);
+        enemy1Rect.setFitWidth(30);
+        enemy1Rect.setFitHeight(30);
+        enemy1Rect.setPreserveRatio(false);
+
+        ImageView enemy2Rect = new ImageView(new Image("monster.png"));
+        enemy2Rect.setX(500);
+        enemy2Rect.setY(300);
+        enemy2Rect.setFitWidth(30);
+        enemy2Rect.setFitHeight(30);
+        enemy2Rect.setPreserveRatio(false);
+
+        Rectangle enemy1HitBox = new Rectangle(400, 200, 30, 30);
+        enemy1HitBox.setOpacity(0);
+
+        Rectangle enemy2HitBox = new Rectangle(500, 300, 30, 30);
+        enemy2HitBox.setOpacity(0);
 
         String enemy1Name = Backend.generateRandomName();
         String enemy2Name = Backend.generateRandomName();
@@ -203,7 +224,7 @@ public class JungeonJrawler extends Application {
 
         List<Rectangle> walls = Backend.buildMaze(Color.GRAY);
 
-        Backend backend = new Backend(walls, goalRect, playerRect, enemy1Rect, enemy2Rect);
+        Backend backend = new Backend(walls, goalRect, playerRect, enemy1HitBox, enemy2HitBox);
 
         int playerLives = 5;
         List<Rectangle> healthBars = new ArrayList<>();
@@ -226,7 +247,7 @@ public class JungeonJrawler extends Application {
         gameLayout.getChildren().addAll(walls);
         gameLayout.getChildren().add(goalRect);
         gameLayout.getChildren().addAll(playerRect, playerNameText);
-        gameLayout.getChildren().addAll(enemy1Rect, enemy1NameText, enemy2Rect, enemy2NameText);
+        gameLayout.getChildren().addAll(enemy1Rect, enemy1NameText, enemy2Rect, enemy2NameText, enemy1HitBox, enemy2HitBox);
         gameLayout.getChildren().addAll(healthBars);
         gameLayout.getChildren().add(healthText);
         gameLayout.getChildren().add(instructionsButton);
@@ -312,12 +333,16 @@ public class JungeonJrawler extends Application {
                     if (!backend.wallCollision(enemy1Pos[0], enemy1Pos[1])) {
                         enemy1Rect.setX(enemy1Pos[0]);
                         enemy1Rect.setY(enemy1Pos[1]);
+                        enemy1HitBox.setX(enemy1Pos[0]); // Update the hitbox
+                        enemy1HitBox.setY(enemy1Pos[1]);
                     }
 
                     double[] enemy2Pos = backend.enemy2ChasePlayer();
                     if (!backend.wallCollision(enemy2Pos[0], enemy2Pos[1])) {
                         enemy2Rect.setX(enemy2Pos[0]);
                         enemy2Rect.setY(enemy2Pos[1]);
+                        enemy2HitBox.setX(enemy2Pos[0]); // Update the hitbox
+                        enemy2HitBox.setY(enemy2Pos[1]);
                     }
                 }
 

@@ -7,6 +7,7 @@
 - added win sound effect
 - added battle music
 - added welcome music
+- added zombie texture
 
 the audio path is very picky for some reason, the app is running in CS1331/src/javafxApp.java
 both the audio files and images are placed together in the /src folder
