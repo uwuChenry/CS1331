@@ -9,6 +9,15 @@
 - added welcome music
 - added zombie texture
 
-the audio path is very picky for some reason, the app is running in CS1331/src/javafxApp.java
+the audio path for javafx is very picky for some reason, the app is running in CS1331/src/JungeonJrawler.java
 both the audio files and images are placed together in the /src folder
 but for some reason the audio path needs to be "src/audioName.wav" and not just "audioName.wav" (like the image)
+
+Repository Structure:
+- CS1331 (main folder)
+  - javafxsdk folder (contains the JavaFX SDK libraries needed to run the game)
+  - src folder (contains all source code and resources)
+    - JungeonJrawler.java (main game class)
+    - Backend.java (game logic and collision detection)
+    - Image resources (monster.png, welcomeImage.png, etc.)
+    - Audio files (welcome.wav, hurt.wav, fight.wav, win.wav, lose.wav)

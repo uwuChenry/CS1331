@@ -13,6 +13,7 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -27,15 +28,10 @@ import javafx.stage.Modality;
 import javafx.util.Duration;
 import java.util.List;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
 import java.util.ArrayList;
 import java.io.File;
-import java.io.IOException;
+
+import javafx.scene.media.Media;
 
 /**
  * JungeonJrawler is a simple dungeon crawler game get to the exit while avoiding enemies to win.
@@ -56,7 +52,9 @@ public class JungeonJrawler extends Application {
         launch(args);
     }
 
-    private Clip backgroundMusic;
+    private MediaPlayer welcomeMusic;
+    private MediaPlayer gameMusic;
+    private MediaPlayer gameOverMusic;
 
     /**
      * Initializes the application by setting the window title and showing
@@ -79,14 +77,18 @@ public class JungeonJrawler extends Application {
      * @param primaryStage The primary stage for this application
      */
     private void showWelcomeScreen(Stage primaryStage) {
+
+        if (gameOverMusic != null) {
+            gameOverMusic.stop();
+        }
         try {
-            File soundFile = new File("src/welcome.wav");
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
-            backgroundMusic = AudioSystem.getClip();
-            backgroundMusic.open(audioInputStream);
-            backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
-            backgroundMusic.start();
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            String musicFile = "src/welcome.wav";
+            Media sound = new Media(new File(musicFile).toURI().toString());
+            welcomeMusic = new MediaPlayer(sound);
+            welcomeMusic.setCycleCount(MediaPlayer.INDEFINITE);
+            welcomeMusic.setVolume(0.2);
+            welcomeMusic.play();
+        } catch (Exception ex) {
             System.out.println("Could not play welcome music: " + ex.getMessage());
         }
 
@@ -181,8 +183,6 @@ public class JungeonJrawler extends Application {
         primaryStage.setScene(namingScene);
     }
 
-    private Clip gameMusic;
-
     /**
      * Displays the main game screen where the player navigates a maze to reach the exit.
      * Sets up the game environment including the player, enemies, maze walls, and goal.
@@ -192,22 +192,23 @@ public class JungeonJrawler extends Application {
      * @param playerName The name entered by the player on the character naming screen
      */
     private void showGameScreen(Stage primaryStage, String playerName) {
-        if (backgroundMusic != null && backgroundMusic.isRunning()) {
-            backgroundMusic.stop();
-            backgroundMusic.close();
+        // Stop welcome music if playing
+        if (welcomeMusic != null) {
+            welcomeMusic.stop();
         }
 
+        // Start game music
         try {
-            File soundFile = new File("src/fight.wav");
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
-            gameMusic = AudioSystem.getClip();
-            gameMusic.open(audioInputStream);
-            gameMusic.loop(Clip.LOOP_CONTINUOUSLY);
-            gameMusic.start();
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            String musicFile = "src/fight.wav";
+            Media sound = new Media(new File(musicFile).toURI().toString());
+            gameMusic = new MediaPlayer(sound);
+            gameMusic.setCycleCount(MediaPlayer.INDEFINITE);  // Loop continuously
+            gameMusic.play();
+        } catch (Exception ex) {
             System.out.println("Could not play game music: " + ex.getMessage());
         }
 
+        // Set up game layout and objects
         Pane gameLayout = new Pane();
         gameLayout.setStyle("-fx-background-color: black;");
 
@@ -218,6 +219,7 @@ public class JungeonJrawler extends Application {
         playerNameText.setFill(Color.WHITE);
         playerNameText.setFont(Font.font(12));
 
+        // Set up enemy objects
         ImageView enemy1Rect = new ImageView(new Image("monster.png"));
         enemy1Rect.setX(400);
         enemy1Rect.setY(200);
@@ -285,11 +287,45 @@ public class JungeonJrawler extends Application {
 
         Scene gameScene = new Scene(gameLayout, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        boolean[] upPressed = {false };
-        boolean[] downPressed = {false };
-        boolean[] leftPressed = {false };
-        boolean[] rightPressed = {false };
 
+        boolean[] upPressed = {false};
+        boolean[] downPressed = {false};
+        boolean[] leftPressed = {false};
+        boolean[] rightPressed = {false};
+
+        setupKeyHandling(gameScene, upPressed, downPressed, leftPressed, rightPressed);
+
+        final boolean[] isInvulnerable = {false};
+
+        AnimationTimer gameLoop = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                updateTextPositions(playerRect, playerNameText, enemy1Rect, enemy1NameText,
+                                  enemy2Rect, enemy2NameText);
+
+                handlePlayerMovement(backend, playerRect, upPressed, downPressed, leftPressed, rightPressed);
+
+                handleEnemyMovement(backend, enemy1Rect, enemy1HitBox, enemy2Rect, enemy2HitBox, isInvulnerable);
+
+                if (!isInvulnerable[0] && backend.enemyCollision(playerRect.getX(), playerRect.getY())) {
+                    handlePlayerCollision(primaryStage, this, healthBars, gameLayout, playerRect, isInvulnerable);
+                }
+
+                if (backend.goalReached()) {
+                    handleGoalReached(primaryStage, this);
+                }
+            }
+        };
+
+        primaryStage.setScene(gameScene);
+        gameLoop.start();
+    }
+
+    /**
+     * Sets up keyboard event handlers for the game.
+     */
+    private void setupKeyHandling(Scene gameScene, boolean[] upPressed, boolean[] downPressed,
+                                boolean[] leftPressed, boolean[] rightPressed) {
         gameScene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.W || e.getCode() == KeyCode.UP) {
                 upPressed[0] = true;
@@ -313,138 +349,160 @@ public class JungeonJrawler extends Application {
                 rightPressed[0] = false;
             }
         });
+    }
 
-        final boolean[] isInvulnerable = {false };
+    /**
+     * Updates the text positions to follow their respective objects.
+     */
+    private void updateTextPositions(Rectangle playerRect, Text playerNameText,
+                                   ImageView enemy1Rect, Text enemy1NameText,
+                                   ImageView enemy2Rect, Text enemy2NameText) {
+        playerNameText.setX(playerRect.getX());
+        playerNameText.setY(playerRect.getY() - 5);
 
-        AnimationTimer gameLoop = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                playerNameText.setX(playerRect.getX());
-                playerNameText.setY(playerRect.getY() - 5);
+        enemy1NameText.setX(enemy1Rect.getX());
+        enemy1NameText.setY(enemy1Rect.getY() - 5);
 
-                enemy1NameText.setX(enemy1Rect.getX());
-                enemy1NameText.setY(enemy1Rect.getY() - 5);
+        enemy2NameText.setX(enemy2Rect.getX());
+        enemy2NameText.setY(enemy2Rect.getY() - 5);
+    }
 
-                enemy2NameText.setX(enemy2Rect.getX());
-                enemy2NameText.setY(enemy2Rect.getY() - 5);
+    /**
+     * Handles player movement based on key presses.
+     */
+    private void handlePlayerMovement(Backend backend, Rectangle playerRect,
+                                    boolean[] upPressed, boolean[] downPressed,
+                                    boolean[] leftPressed, boolean[] rightPressed) {
+        double newX = playerRect.getX();
+        double newY = playerRect.getY();
+        double moveSpeed = 2;
 
-                double newX = playerRect.getX();
-                double newY = playerRect.getY();
-                double moveSpeed = 2;
+        if (upPressed[0] && !downPressed[0]) {
+            newY -= moveSpeed;
+        }
+        if (downPressed[0] && !upPressed[0]) {
+            newY += moveSpeed;
+        }
+        if (leftPressed[0] && !rightPressed[0]) {
+            newX -= moveSpeed;
+        }
+        if (rightPressed[0] && !leftPressed[0]) {
+            newX += moveSpeed;
+        }
 
-                if (upPressed[0] && !downPressed[0]) {
-                    newY -= moveSpeed;
-                }
-                if (downPressed[0] && !upPressed[0]) {
-                    newY += moveSpeed;
-                }
-                if (leftPressed[0] && !rightPressed[0]) {
-                    newX -= moveSpeed;
-                }
-                if (rightPressed[0] && !leftPressed[0]) {
-                    newX += moveSpeed;
-                }
-
-                if (!backend.wallCollision(newX, newY)) {
+        if (!backend.wallCollision(newX, newY)) {
+            playerRect.setX(newX);
+            playerRect.setY(newY);
+        } else {
+            if (newX != playerRect.getX() && newY != playerRect.getY()) {
+                if (!backend.wallCollision(newX, playerRect.getY())) {
                     playerRect.setX(newX);
+                } else if (!backend.wallCollision(playerRect.getX(), newY)) {
                     playerRect.setY(newY);
-                } else {
-                    if (newX != playerRect.getX() && newY != playerRect.getY()) {
-                        if (!backend.wallCollision(newX, playerRect.getY())) {
-                            playerRect.setX(newX);
-                        } else if (!backend.wallCollision(playerRect.getX(), newY)) {
-                            playerRect.setY(newY);
-                        }
-                    }
-                }
-
-                if (!isInvulnerable[0]) {
-                    double[] enemy1Pos = backend.enemy1ChasePlayer();
-                    if (!backend.wallCollision(enemy1Pos[0], enemy1Pos[1])) {
-                        enemy1Rect.setX(enemy1Pos[0]);
-                        enemy1Rect.setY(enemy1Pos[1]);
-                        enemy1HitBox.setX(enemy1Pos[0]); // Update the hitbox
-                        enemy1HitBox.setY(enemy1Pos[1]);
-                    }
-                    double[] enemy2Pos = backend.enemy2ChasePlayer();
-                    if (!backend.wallCollision(enemy2Pos[0], enemy2Pos[1])) {
-                        enemy2Rect.setX(enemy2Pos[0]);
-                        enemy2Rect.setY(enemy2Pos[1]);
-                        enemy2HitBox.setX(enemy2Pos[0]); // Update the hitbox
-                        enemy2HitBox.setY(enemy2Pos[1]);
-                    }
-                }
-
-                if (!isInvulnerable[0] && backend.enemyCollision(playerRect.getX(), playerRect.getY())) {
-                    if (!healthBars.isEmpty()) {
-                        Rectangle healthBar = healthBars.remove(healthBars.size() - 1);
-                        gameLayout.getChildren().remove(healthBar);
-
-                        System.out.println("sound played");
-                        try {
-                            File soundFile = new File("src/hurt.wav");
-                            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
-                            Clip clip = AudioSystem.getClip();
-                            clip.open(audioInputStream);
-                            clip.start();
-                        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                            System.out.println("Could not play hurt sound: " + ex.getMessage());
-                        }
-
-                        isInvulnerable[0] = true;
-                        playerRect.setOpacity(0.5);
-
-                        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
-                        pause.setOnFinished(event -> {
-                            isInvulnerable[0] = false;
-                            playerRect.setOpacity(1.0);
-                        });
-                        pause.play();
-                    }
-
-                    if (healthBars.isEmpty()) {
-                        this.stop();
-                        if (gameMusic != null && gameMusic.isRunning()) {
-                            gameMusic.stop();
-                            gameMusic.close();
-                        }
-                        System.out.println("You lost!");
-                        try {
-                            File soundFile = new File("src/lose.wav");
-                            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
-                            Clip clip = AudioSystem.getClip();
-                            clip.open(audioInputStream);
-                            clip.start();
-                        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                            System.out.println("Could not play lose sound: " + ex.getMessage());
-                        }
-                        showGameOverScreen(primaryStage, false);
-                    }
-                }
-
-                if (backend.goalReached()) {
-                    if (gameMusic != null && gameMusic.isRunning()) {
-                        gameMusic.stop();
-                        gameMusic.close();
-                    }
-                    try {
-                        File soundFile = new File("src/win.wav");
-                        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
-                        Clip clip = AudioSystem.getClip();
-                        clip.open(audioInputStream);
-                        clip.start();
-                    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                        System.out.println("Could not play win sound: " + ex.getMessage());
-                    }
-                    this.stop();
-                    System.out.println("Congrats you won!");
-                    showGameOverScreen(primaryStage, true);
                 }
             }
-        };
+        }
+    }
 
-        primaryStage.setScene(gameScene);
-        gameLoop.start();
+    /**
+     * Handles enemy movement logic.
+     */
+    private void handleEnemyMovement(Backend backend, ImageView enemy1Rect, Rectangle enemy1HitBox,
+                                   ImageView enemy2Rect, Rectangle enemy2HitBox,
+                                   boolean[] isInvulnerable) {
+        if (!isInvulnerable[0]) {
+            double[] enemy1Pos = backend.enemy1ChasePlayer();
+            if (!backend.wallCollision(enemy1Pos[0], enemy1Pos[1])) {
+                enemy1Rect.setX(enemy1Pos[0]);
+                enemy1Rect.setY(enemy1Pos[1]);
+                enemy1HitBox.setX(enemy1Pos[0]); // Update the hitbox
+                enemy1HitBox.setY(enemy1Pos[1]);
+            }
+
+            double[] enemy2Pos = backend.enemy2ChasePlayer();
+            if (!backend.wallCollision(enemy2Pos[0], enemy2Pos[1])) {
+                enemy2Rect.setX(enemy2Pos[0]);
+                enemy2Rect.setY(enemy2Pos[1]);
+                enemy2HitBox.setX(enemy2Pos[0]); // Update the hitbox
+                enemy2HitBox.setY(enemy2Pos[1]);
+            }
+        }
+    }
+
+    /**
+     * Handles player collision with enemies.
+     */
+    private void handlePlayerCollision(Stage primaryStage, AnimationTimer gameLoop,
+                                     List<Rectangle> healthBars, Pane gameLayout,
+                                     Rectangle playerRect, boolean[] isInvulnerable) {
+        if (!healthBars.isEmpty()) {
+            Rectangle healthBar = healthBars.remove(healthBars.size() - 1);
+            gameLayout.getChildren().remove(healthBar);
+
+            System.out.println("sound played");
+            // Play hurt sound
+            try {
+                String soundFile = "src/hurt.wav";
+                Media sound = new Media(new File(soundFile).toURI().toString());
+                MediaPlayer mediaPlayer = new MediaPlayer(sound);
+                mediaPlayer.play();
+            } catch (Exception ex) {
+                System.out.println("Could not play hurt sound: " + ex.getMessage());
+            }
+
+            isInvulnerable[0] = true;
+            playerRect.setOpacity(0.5);
+
+            PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+            pause.setOnFinished(event -> {
+                isInvulnerable[0] = false;
+                playerRect.setOpacity(1.0);
+            });
+            pause.play();
+        }
+
+        if (healthBars.isEmpty()) {
+            gameLoop.stop();
+            // Stop game music
+            if (gameMusic != null) {
+                gameMusic.stop();
+            }
+            System.out.println("You lost!");
+            // Play lose sound
+            try {
+                String soundFile = "src/lose.wav";
+                Media sound = new Media(new File(soundFile).toURI().toString());
+                MediaPlayer mediaPlayer = new MediaPlayer(sound);
+                mediaPlayer.play();
+                mediaPlayer.setVolume(0.1);
+            } catch (Exception ex) {
+                System.out.println("Could not play lose sound: " + ex.getMessage());
+            }
+            showGameOverScreen(primaryStage, false);
+        }
+    }
+
+    /**
+     * Handles when player reaches the goal.
+     */
+    private void handleGoalReached(Stage primaryStage, AnimationTimer gameLoop) {
+        // Stop game music
+        if (gameMusic != null) {
+            gameMusic.stop();
+        }
+        // Play win sound
+        try {
+            String soundFile = "src/win.wav";
+            Media sound = new Media(new File(soundFile).toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.play();
+            mediaPlayer.setVolume(0.1);
+        } catch (Exception ex) {
+            System.out.println("Could not play win sound: " + ex.getMessage());
+        }
+        gameLoop.stop();
+        System.out.println("Congrats you won!");
+        showGameOverScreen(primaryStage, true);
     }
 
     /**
@@ -492,6 +550,17 @@ public class JungeonJrawler extends Application {
         VBox gameOverLayout = new VBox(20);
         gameOverLayout.setAlignment(Pos.CENTER);
         gameOverLayout.setPadding(new Insets(20));
+
+        try {
+            String musicFile = "src/reward.wav";
+            Media sound = new Media(new File(musicFile).toURI().toString());
+            gameOverMusic = new MediaPlayer(sound);
+            gameOverMusic.setCycleCount(MediaPlayer.INDEFINITE); 
+            gameOverMusic.setVolume(0.2);
+            gameOverMusic.play();
+        } catch (Exception ex) {
+            System.out.println("Could not play game over music: " + ex.getMessage());
+        }
 
         Text resultText;
         if (hasWon) {
