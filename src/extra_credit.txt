@@ -1,5 +1,5 @@
 - better keyboard input handling (you can move in any direction while holding down different keys)
-- added you "you lose" scene with play again button
+- added "you lose" scene with play again button
 - added "you win" scene with play again button
 - added collision check for enemies
 - added losing sound effect
@@ -8,6 +8,7 @@
 - added battle music
 - added welcome music
 - added zombie texture
+- modififed invulnerability after taking damage from 2 seconds to 0.5 seconds
 
 the audio path for javafx is very picky for some reason, the app is running in CS1331/src/JungeonJrawler.java
 both the audio files and images are placed together in the /src folder
@@ -20,4 +21,4 @@ Repository Structure:
     - JungeonJrawler.java (main game class)
     - Backend.java (game logic and collision detection)
     - Image resources (monster.png, welcomeImage.png, etc.)
-    - Audio files (welcome.wav, hurt.wav, fight.wav, win.wav, lose.wav)
+    - Audio files (welcome.wav, hurt.wav, fight.wav, win.wav, lose.wav, etc.)

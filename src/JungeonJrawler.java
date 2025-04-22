@@ -35,6 +35,7 @@ import javafx.scene.media.Media;
 
 /**
  * JungeonJrawler is a simple dungeon crawler game get to the exit while avoiding enemies to win.
+ *
  * @author Po Cheng Chen
  * @version 1.0
  */
@@ -192,23 +193,20 @@ public class JungeonJrawler extends Application {
      * @param playerName The name entered by the player on the character naming screen
      */
     private void showGameScreen(Stage primaryStage, String playerName) {
-        // Stop welcome music if playing
         if (welcomeMusic != null) {
             welcomeMusic.stop();
         }
 
-        // Start game music
         try {
             String musicFile = "src/fight.wav";
             Media sound = new Media(new File(musicFile).toURI().toString());
             gameMusic = new MediaPlayer(sound);
-            gameMusic.setCycleCount(MediaPlayer.INDEFINITE);  // Loop continuously
+            gameMusic.setCycleCount(MediaPlayer.INDEFINITE);
             gameMusic.play();
         } catch (Exception ex) {
             System.out.println("Could not play game music: " + ex.getMessage());
         }
 
-        // Set up game layout and objects
         Pane gameLayout = new Pane();
         gameLayout.setStyle("-fx-background-color: black;");
 
@@ -321,9 +319,6 @@ public class JungeonJrawler extends Application {
         gameLoop.start();
     }
 
-    /**
-     * Sets up keyboard event handlers for the game.
-     */
     private void setupKeyHandling(Scene gameScene, boolean[] upPressed, boolean[] downPressed,
                                 boolean[] leftPressed, boolean[] rightPressed) {
         gameScene.setOnKeyPressed(e -> {
@@ -351,9 +346,6 @@ public class JungeonJrawler extends Application {
         });
     }
 
-    /**
-     * Updates the text positions to follow their respective objects.
-     */
     private void updateTextPositions(Rectangle playerRect, Text playerNameText,
                                    ImageView enemy1Rect, Text enemy1NameText,
                                    ImageView enemy2Rect, Text enemy2NameText) {
@@ -367,9 +359,6 @@ public class JungeonJrawler extends Application {
         enemy2NameText.setY(enemy2Rect.getY() - 5);
     }
 
-    /**
-     * Handles player movement based on key presses.
-     */
     private void handlePlayerMovement(Backend backend, Rectangle playerRect,
                                     boolean[] upPressed, boolean[] downPressed,
                                     boolean[] leftPressed, boolean[] rightPressed) {
@@ -404,9 +393,6 @@ public class JungeonJrawler extends Application {
         }
     }
 
-    /**
-     * Handles enemy movement logic.
-     */
     private void handleEnemyMovement(Backend backend, ImageView enemy1Rect, Rectangle enemy1HitBox,
                                    ImageView enemy2Rect, Rectangle enemy2HitBox,
                                    boolean[] isInvulnerable) {
@@ -429,9 +415,6 @@ public class JungeonJrawler extends Application {
         }
     }
 
-    /**
-     * Handles player collision with enemies.
-     */
     private void handlePlayerCollision(Stage primaryStage, AnimationTimer gameLoop,
                                      List<Rectangle> healthBars, Pane gameLayout,
                                      Rectangle playerRect, boolean[] isInvulnerable) {
@@ -440,7 +423,6 @@ public class JungeonJrawler extends Application {
             gameLayout.getChildren().remove(healthBar);
 
             System.out.println("sound played");
-            // Play hurt sound
             try {
                 String soundFile = "src/hurt.wav";
                 Media sound = new Media(new File(soundFile).toURI().toString());
@@ -463,12 +445,10 @@ public class JungeonJrawler extends Application {
 
         if (healthBars.isEmpty()) {
             gameLoop.stop();
-            // Stop game music
             if (gameMusic != null) {
                 gameMusic.stop();
             }
             System.out.println("You lost!");
-            // Play lose sound
             try {
                 String soundFile = "src/lose.wav";
                 Media sound = new Media(new File(soundFile).toURI().toString());
@@ -482,15 +462,10 @@ public class JungeonJrawler extends Application {
         }
     }
 
-    /**
-     * Handles when player reaches the goal.
-     */
     private void handleGoalReached(Stage primaryStage, AnimationTimer gameLoop) {
-        // Stop game music
         if (gameMusic != null) {
             gameMusic.stop();
         }
-        // Play win sound
         try {
             String soundFile = "src/win.wav";
             Media sound = new Media(new File(soundFile).toURI().toString());
@@ -505,10 +480,6 @@ public class JungeonJrawler extends Application {
         showGameOverScreen(primaryStage, true);
     }
 
-    /**
-     * Displays a modal dialog with instructions for playing the game.
-     * Explains controls, objectives, and game mechanics to the player.
-     */
     private void showInstructions() {
         Stage instructionsStage = new Stage();
         instructionsStage.initModality(Modality.APPLICATION_MODAL);
@@ -540,7 +511,6 @@ public class JungeonJrawler extends Application {
 
     /**
      * Displays the game over screen when the player either wins or loses.
-     * Shows different messages and background colors based on the game outcome.
      * Provides a button to play again.
      *
      * @param primaryStage The primary stage for this application
@@ -555,7 +525,7 @@ public class JungeonJrawler extends Application {
             String musicFile = "src/reward.wav";
             Media sound = new Media(new File(musicFile).toURI().toString());
             gameOverMusic = new MediaPlayer(sound);
-            gameOverMusic.setCycleCount(MediaPlayer.INDEFINITE); 
+            gameOverMusic.setCycleCount(MediaPlayer.INDEFINITE);
             gameOverMusic.setVolume(0.2);
             gameOverMusic.play();
         } catch (Exception ex) {
