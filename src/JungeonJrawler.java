@@ -37,17 +37,33 @@ import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * JungeonJrawler is a simple dungeon crawler game get to the exit while avoiding enemies to win.
+ * @author Po Cheng Chen
+ * @version 1.0
+ */
 public class JungeonJrawler extends Application {
     private static final int WINDOW_WIDTH = 800;
     private static final int WINDOW_HEIGHT = 600;
     private static final String WINDOW_TITLE = "Jungeon Jrawler";
 
+    /**
+     * The main entry point for the application.
+     *
+     * @param args Command line arguments (not used)
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
     private Clip backgroundMusic;
 
+    /**
+     * Initializes the application by setting the window title and showing
+     * the welcome screen.
+     *
+     * @param primaryStage The primary stage for this application
+     */
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle(WINDOW_TITLE);
@@ -56,6 +72,12 @@ public class JungeonJrawler extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Displays the welcome screen with a title, play button, and background image.
+     * Starts playing background music for the welcome screen.
+     *
+     * @param primaryStage The primary stage for this application
+     */
     private void showWelcomeScreen(Stage primaryStage) {
         try {
             File soundFile = new File("src/welcome.wav");
@@ -67,7 +89,7 @@ public class JungeonJrawler extends Application {
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
             System.out.println("Could not play welcome music: " + ex.getMessage());
         }
-        
+
         VBox welcomeLayout = new VBox(30);
         welcomeLayout.setAlignment(Pos.TOP_CENTER);
         welcomeLayout.setPadding(new Insets(100, 10, 10, 10));
@@ -101,6 +123,12 @@ public class JungeonJrawler extends Application {
         primaryStage.setScene(welcomeScene);
     }
 
+    /**
+     * Displays the character naming screen where the player can enter their name.
+     * Validates that the player has entered a name before proceeding to the game screen.
+     *
+     * @param primaryStage The primary stage for this application
+     */
     private void showCharacterNamingScreen(Stage primaryStage) {
         VBox namingLayout = new VBox(30);
         namingLayout.setAlignment(Pos.CENTER_RIGHT);
@@ -155,6 +183,14 @@ public class JungeonJrawler extends Application {
 
     private Clip gameMusic;
 
+    /**
+     * Displays the main game screen where the player navigates a maze to reach the exit.
+     * Sets up the game environment including the player, enemies, maze walls, and goal.
+     * Handles player input, collision detection, and game state updates.
+     *
+     * @param primaryStage The primary stage for this application
+     * @param playerName The name entered by the player on the character naming screen
+     */
     private void showGameScreen(Stage primaryStage, String playerName) {
         if (backgroundMusic != null && backgroundMusic.isRunning()) {
             backgroundMusic.stop();
@@ -171,7 +207,7 @@ public class JungeonJrawler extends Application {
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
             System.out.println("Could not play game music: " + ex.getMessage());
         }
-        
+
         Pane gameLayout = new Pane();
         gameLayout.setStyle("-fx-background-color: black;");
 
@@ -181,12 +217,6 @@ public class JungeonJrawler extends Application {
         Text playerNameText = new Text(playerName);
         playerNameText.setFill(Color.WHITE);
         playerNameText.setFont(Font.font(12));
-
-        // Rectangle enemy1Rect = new Rectangle(400, 200, 20, 20);
-        // enemy1Rect.setFill(Color.RED);
-
-        // Rectangle enemy2Rect = new Rectangle(500, 300, 20, 20);
-        // enemy2Rect.setFill(Color.RED);
 
         ImageView enemy1Rect = new ImageView(new Image("monster.png"));
         enemy1Rect.setX(400);
@@ -247,17 +277,18 @@ public class JungeonJrawler extends Application {
         gameLayout.getChildren().addAll(walls);
         gameLayout.getChildren().add(goalRect);
         gameLayout.getChildren().addAll(playerRect, playerNameText);
-        gameLayout.getChildren().addAll(enemy1Rect, enemy1NameText, enemy2Rect, enemy2NameText, enemy1HitBox, enemy2HitBox);
+        gameLayout.getChildren().addAll(enemy1Rect, enemy1NameText,
+            enemy2Rect, enemy2NameText, enemy1HitBox, enemy2HitBox);
         gameLayout.getChildren().addAll(healthBars);
         gameLayout.getChildren().add(healthText);
         gameLayout.getChildren().add(instructionsButton);
 
         Scene gameScene = new Scene(gameLayout, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        boolean[] upPressed = { false };
-        boolean[] downPressed = { false };
-        boolean[] leftPressed = { false };
-        boolean[] rightPressed = { false };
+        boolean[] upPressed = {false };
+        boolean[] downPressed = {false };
+        boolean[] leftPressed = {false };
+        boolean[] rightPressed = {false };
 
         gameScene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.W || e.getCode() == KeyCode.UP) {
@@ -282,8 +313,8 @@ public class JungeonJrawler extends Application {
                 rightPressed[0] = false;
             }
         });
-        
-        final boolean[] isInvulnerable = { false };
+
+        final boolean[] isInvulnerable = {false };
 
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
@@ -321,13 +352,12 @@ public class JungeonJrawler extends Application {
                     if (newX != playerRect.getX() && newY != playerRect.getY()) {
                         if (!backend.wallCollision(newX, playerRect.getY())) {
                             playerRect.setX(newX);
-                        }
-                        else if (!backend.wallCollision(playerRect.getX(), newY)) {
+                        } else if (!backend.wallCollision(playerRect.getX(), newY)) {
                             playerRect.setY(newY);
                         }
                     }
                 }
-                
+
                 if (!isInvulnerable[0]) {
                     double[] enemy1Pos = backend.enemy1ChasePlayer();
                     if (!backend.wallCollision(enemy1Pos[0], enemy1Pos[1])) {
@@ -336,7 +366,6 @@ public class JungeonJrawler extends Application {
                         enemy1HitBox.setX(enemy1Pos[0]); // Update the hitbox
                         enemy1HitBox.setY(enemy1Pos[1]);
                     }
-
                     double[] enemy2Pos = backend.enemy2ChasePlayer();
                     if (!backend.wallCollision(enemy2Pos[0], enemy2Pos[1])) {
                         enemy2Rect.setX(enemy2Pos[0]);
@@ -361,7 +390,7 @@ public class JungeonJrawler extends Application {
                         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
                             System.out.println("Could not play hurt sound: " + ex.getMessage());
                         }
-                        
+
                         isInvulnerable[0] = true;
                         playerRect.setOpacity(0.5);
 
@@ -418,6 +447,10 @@ public class JungeonJrawler extends Application {
         gameLoop.start();
     }
 
+    /**
+     * Displays a modal dialog with instructions for playing the game.
+     * Explains controls, objectives, and game mechanics to the player.
+     */
     private void showInstructions() {
         Stage instructionsStage = new Stage();
         instructionsStage.initModality(Modality.APPLICATION_MODAL);
@@ -431,11 +464,11 @@ public class JungeonJrawler extends Application {
         titleText.setFont(Font.font(18));
 
         Text movementText = new Text(
-                "- Use WASD or arrow keys to move the player\n" +
-                    "- Avoid the enemies\n" +
-                    "- Reach the green exit to win\n" +
-                    "- You have 5 lives\n" +
-                    "- After being hit, you're invulnerable for 0.5 seconds");
+                "- Use WASD or arrow keys to move the player\n"
+                    + "- Avoid the enemies\n"
+                    + "- Reach the green exit to win\n"
+                    + "- You have 5 lives\n"
+                    + "- After being hit, you're invulnerable for 0.5 seconds");
 
         Button closeButton = new Button("Close");
         closeButton.setOnAction(e -> instructionsStage.close());
@@ -447,6 +480,14 @@ public class JungeonJrawler extends Application {
         instructionsStage.show();
     }
 
+    /**
+     * Displays the game over screen when the player either wins or loses.
+     * Shows different messages and background colors based on the game outcome.
+     * Provides a button to play again.
+     *
+     * @param primaryStage The primary stage for this application
+     * @param hasWon Boolean indicating whether the player won (true) or lost (false)
+     */
     private void showGameOverScreen(Stage primaryStage, boolean hasWon) {
         VBox gameOverLayout = new VBox(20);
         gameOverLayout.setAlignment(Pos.CENTER);
