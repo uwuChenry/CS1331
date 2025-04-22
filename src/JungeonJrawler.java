@@ -1,6 +1,4 @@
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,7 +11,6 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -26,10 +23,19 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import java.util.List;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+
 
 public class JungeonJrawler extends Application {
     private static final int WINDOW_WIDTH = 800;
@@ -40,14 +46,27 @@ public class JungeonJrawler extends Application {
         launch(args);
     }
 
+    private Clip backgroundMusic;
+
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle(WINDOW_TITLE);
+
         showWelcomeScreen(primaryStage);
         primaryStage.show();
     }
 
     private void showWelcomeScreen(Stage primaryStage) {
+        try {
+            File soundFile = new File("src/welcome.wav");
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+            backgroundMusic = AudioSystem.getClip();
+            backgroundMusic.open(audioInputStream);
+            backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY); // Loop continuously
+            backgroundMusic.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            System.out.println("Could not play welcome music: " + ex.getMessage());
+        }
         // Set up the welcome screen layout
         VBox welcomeLayout = new VBox(30); // Spacing between elements
         welcomeLayout.setAlignment(Pos.TOP_CENTER);
@@ -151,8 +170,25 @@ public class JungeonJrawler extends Application {
         primaryStage.setScene(namingScene);
     }
 
+    private Clip gameMusic;
+
     // Add this method to your JungeonJrawler class to replace the placeholder
     private void showGameScreen(Stage primaryStage, String playerName) {
+        if (backgroundMusic != null && backgroundMusic.isRunning()) {
+            backgroundMusic.stop();
+            backgroundMusic.close();
+        }
+
+        try {
+            File soundFile = new File("src/fight.wav");
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+            gameMusic = AudioSystem.getClip();
+            gameMusic.open(audioInputStream);
+            gameMusic.loop(Clip.LOOP_CONTINUOUSLY); // Loop continuously
+            gameMusic.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            System.out.println("Could not play game music: " + ex.getMessage());
+        }
         // Main game layout
         Pane gameLayout = new Pane();
         gameLayout.setStyle("-fx-background-color: black;");
@@ -340,11 +376,22 @@ public class JungeonJrawler extends Application {
                         Rectangle healthBar = healthBars.remove(healthBars.size() - 1);
                         gameLayout.getChildren().remove(healthBar);
 
+                        System.out.println("sound played");
+                        try {
+                            // Load sound file
+                            File soundFile = new File("src/hurt.wav"); // Note: needs WAV format instead of MP3
+                            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+                            Clip clip = AudioSystem.getClip();
+                            clip.open(audioInputStream);
+                            clip.start();
+                        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+                            System.out.println("Could not play hurt sound: " + ex.getMessage());
+                        }
                         // Make player invulnerable for 2 seconds
                         isInvulnerable[0] = true;
                         playerRect.setOpacity(0.5); // Visual indication of invulnerability
 
-                        PauseTransition pause = new PauseTransition(Duration.seconds(1));
+                        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
                         pause.setOnFinished(event -> {
                             isInvulnerable[0] = false;
                             playerRect.setOpacity(1.0);
@@ -355,13 +402,41 @@ public class JungeonJrawler extends Application {
                     // Check if player has no lives left
                     if (healthBars.isEmpty()) {
                         this.stop(); // Stop the game loop
+                        if (gameMusic != null && gameMusic.isRunning()) {
+                            gameMusic.stop();
+                            gameMusic.close();
+                        }
                         System.out.println("You lost!");
+                        try {
+                            // Load sound file
+                            File soundFile = new File("src/lose.wav");
+                            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+                            Clip clip = AudioSystem.getClip();
+                            clip.open(audioInputStream);
+                            clip.start();
+                        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+                            System.out.println("Could not play lose sound: " + ex.getMessage());
+                        }
                         showGameOverScreen(primaryStage, false);
                     }
                 }
 
                 // Check if player reached goal
                 if (backend.goalReached()) {
+                    if (gameMusic != null && gameMusic.isRunning()) {
+                        gameMusic.stop();
+                        gameMusic.close();
+                    }
+                    try {
+                        // Load sound file
+                        File soundFile = new File("src/win.wav");
+                        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+                        Clip clip = AudioSystem.getClip();
+                        clip.open(audioInputStream);
+                        clip.start();
+                    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+                        System.out.println("Could not play win sound: " + ex.getMessage());
+                    }
                     this.stop(); // Stop the game loop
                     System.out.println("Congrats you won!");
                     showGameOverScreen(primaryStage, true);

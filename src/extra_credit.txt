@@ -2,3 +2,8 @@
 - added you "you lose" scene with play again button
 - added "you win" scene with play again button
 - added collision check for enemies
+- added losing sound effect
+- added hurt sound effect
+- added win sound effect
+- added battle music
+- added welcome music
